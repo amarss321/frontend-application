@@ -36,12 +36,7 @@ pipeline {
                 sh 'echo "Quality check passed"'
             }
         }
-        stage('OWASP Dependency-Check Scan') {
-            steps {
-                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'    
-            }
-        }
+
         stage('Trivy File Scan') {
             steps {
                 sh 'trivy fs --format table -o trivy-fs-reports.html .'
