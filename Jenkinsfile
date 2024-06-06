@@ -3,7 +3,7 @@ pipeline {
     
     tools{
         jdk 'jdk17'
-        maven 'maven'
+        nodejs 'nodejs'
     }
     
     environment{
@@ -15,6 +15,14 @@ pipeline {
             steps {
                 git credentialsId: 'git-cred', url: 'https://github.com/amarss321/frontend-application.git'
                 }
+        }
+        stage('Sonarqube Analysis') {
+            steps {
+                    withSonarQubeEnv('sonar-server') {
+                    sh "$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=three-tier-frontend -Dsonar.projectKey=three-tier-frontend"
+                
+                }
+            }
         }
     }
 }
