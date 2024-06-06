@@ -26,7 +26,15 @@ pipeline {
         }
         stage('Quality Check') {
             steps {
-                waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                //waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+            }
+        }
+        stage('OWASP Dependency-Check Scan') {
+            steps {
+                
+                    dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                
             }
         }
     }
